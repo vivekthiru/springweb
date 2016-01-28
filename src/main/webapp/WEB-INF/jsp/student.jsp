@@ -13,7 +13,7 @@
         <td><form:input path="name" /></td>
     </tr>
     <tr>
-        <td><form:label path="age">Age</form:label></td>
+        <td><form:label path="age">Age1</form:label></td>
         <td><form:input path="age" /></td>
     </tr>
     <tr>

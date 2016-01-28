@@ -6,7 +6,7 @@
 <body>
 
 <h2>Student Information</h2>
-<form:form method="POST" action="/SpringWeb/addStudent">
+<form:form method="POST" action="/addStudent">
    <table>
     <tr>
         <td><form:label path="name">Name</form:label></td>

@@ -1,0 +1,77 @@
+package com.tcs.web;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+public class WebUtilities {
+	
+	static final String USER_AGENT = "Mozilla/5.0";
+	static final String GOOGLE_SEARCH = "https://www.google.com/search";
+	Proxy globalProxy;
+	
+	public enum ProxyManager{
+		westpac("intproxy80.prod.srv.westpac.com.au",80);
+		
+		private String hostname;
+		private int port;
+		
+		private ProxyManager(String hostname, int port) {
+		        this.hostname = hostname;
+		        this.port = port;
+		}
+	}
+	
+	public WebUtilities() {
+		// TODO Auto-generated constructor stub
+		globalProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ProxyManager.westpac.hostname,ProxyManager.westpac.port));
+	}
+	
+	
+	public Document searchURLWithProxy(String searchParam) throws Exception{
+		
+		String searchURL = GOOGLE_SEARCH + "?q="+searchParam+"&num="+5;
+		return Jsoup.connect(searchURL).proxy(globalProxy).userAgent(USER_AGENT).get();
+		
+	}
+	
+	// HTTP GET request
+		public void sendGet() throws Exception {
+
+			String url = "http://jaunt-api.com";
+			
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection(globalProxy);
+
+			// optional default is GET
+			con.setRequestMethod("GET");
+
+			//add request header
+			con.setRequestProperty("User-Agent", USER_AGENT);
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			//print result
+			System.out.println(response.toString());
+		}
+
+
+}
